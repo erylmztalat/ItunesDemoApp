@@ -39,7 +39,7 @@ extension APIService: API {
         let endpoint = APIEndpoint.search(term: term, media: "music", country: "de", limit: 25, offset: offset, sort: "recent").endpoint
         let response: SearchResponse = try await request(for: endpoint)
         let results = response.results
-        let sortedResults = results.sorted { $0.artistName < $1.artistName }
+        let sortedResults = results.sorted(by: { $0.artistName.lowercased() < $1.artistName.lowercased()})
         return sortedResults
     }
 }
