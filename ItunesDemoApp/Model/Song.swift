@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Song: Codable {
+struct Song: Codable, Identifiable {
+    let id = UUID()
     let trackName: String
     let artistName: String
     let collectionName: String
