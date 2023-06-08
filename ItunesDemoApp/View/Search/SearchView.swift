@@ -14,17 +14,20 @@ struct SearchView: View {
     var body: some View {
         NavigationView {
             Group {
-                if viewModel.songs.isEmpty {
+                if let error = viewModel.error, !viewModel.searchText.isEmpty {
+                    EmptyView(imageName: "exclamationmark.triangle.fill", message: error.localizedDescription)
+                } else if viewModel.songs.isEmpty {
                     EmptyView()
                 } else {
-                    List {
+                    List() {
                         ForEach(viewModel.songs, id: \.id) { song in
-                            VStack(alignment: .leading) {
-                                Text(song.trackName)
-                                Text(song.artistName)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
+                            SearchListView(searchListViewModel: SearchListViewModel(song: song, imageLoader: URLImageLoader()))
+                                .onAppear {
+                                    if song == viewModel.songs.last {
+                                        viewModel.loadMoreMusics(for: song)
+                                    }
+                                }
+                            
                         }
                     }
                 }
@@ -32,8 +35,8 @@ struct SearchView: View {
             .navigationTitle("Search")
             .searchable(text: $viewModel.searchText)
         }
-        .onAppear {
-            viewModel.searchMusic()
+        .onChange(of: viewModel.searchText) { newText in
+            viewModel.search()
         }
     }
 }

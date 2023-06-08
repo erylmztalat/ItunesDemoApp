@@ -33,6 +33,8 @@ class SearchViewModel: ObservableObject {
                 let newSongs = try await api.searchMusic(with: searchText, offset: offset)
                 hasMoreSongs = !newSongs.isEmpty
                 songs.append(contentsOf: newSongs)
+                // MARK: Resorting the list every time we load more items can confuse users because items keep moving around.
+                //songs.sort(by: { $0.artistName.lowercased() < $1.artistName.lowercased() })
                 offset += limit
             } catch let error as NetworkError {
                 self.error = error
@@ -48,6 +50,12 @@ class SearchViewModel: ObservableObject {
         offset = 0
         hasMoreSongs = true
         searchMusic()
+    }
+    
+    func loadMoreMusics(for song: Song) {
+        if !isLoading && hasMoreSongs && song == songs.last {
+            searchMusic()
+        }
     }
 }
 

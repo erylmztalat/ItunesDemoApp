@@ -22,7 +22,7 @@ enum NetworkError: LocalizedError {
         case .decodingError(let error):
             return "Trouble processing data (error: \(error.localizedDescription)). Try again later."
         case .networkError(let error):
-            return "Network error (error: \(error.localizedDescription)). Check internet connection and try again."
+            return "Network error (error: \(error.localizedDescription)). Try again later."
         }
     }
 }
