@@ -12,6 +12,7 @@ enum ImageSize {
     case large
 }
 
+@MainActor
 class SongViewModel: ObservableObject {
     @Published var imageData: Data?
     private let imageLoader: ImageLoader
@@ -34,9 +35,7 @@ class SongViewModel: ObservableObject {
         Task {
             do {
                 let image = try await imageLoader.loadImage(from: url)
-                DispatchQueue.main.async { [weak self] in
-                    self?.imageData = image.jpegData(compressionQuality: 1.0)
-                }
+                self.imageData = image.jpegData(compressionQuality: 1.0)
             } catch {
                 print("Error loading image: \(error)")
             }
