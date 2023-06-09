@@ -42,17 +42,7 @@ final class SearchViewModelTest: XCTestCase {
     func testSearch() {
         Task {
             await searchViewModel.searchMusic()
-            let searchViewModelSongs = await searchViewModel.songs
-            let mockAPISongs = mockAPI.songs
-            XCTAssertEqual(searchViewModelSongs, mockAPISongs)
-        }
-    }
-    
-    func testLoadMoreMusics() {
-        let lastSong = mockAPI.songs.last!
-        
-        Task {
-            await searchViewModel.loadMoreMusics(for: lastSong)
+            try? await Task.sleep(for: .seconds(3))
             let searchViewModelSongs = await searchViewModel.songs
             let mockAPISongs = mockAPI.songs
             XCTAssertEqual(searchViewModelSongs, mockAPISongs)

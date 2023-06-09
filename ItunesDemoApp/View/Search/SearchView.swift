@@ -13,7 +13,9 @@ struct SearchView: View {
     var body: some View {
         NavigationView {
             Group {
-                if let error = viewModel.error, !viewModel.searchText.isEmpty {
+                if viewModel.isLoading {
+                    ProgressView() 
+                } else if let error = viewModel.error, !viewModel.searchText.isEmpty {
                     EmptyStateView(imageName: "exclamationmark.triangle.fill", message: error.localizedDescription)
                 } else if viewModel.songs.isEmpty {
                     EmptyStateView()

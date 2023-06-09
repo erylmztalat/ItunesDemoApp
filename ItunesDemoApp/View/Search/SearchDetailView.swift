@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import WebKit
 
 struct SearchDetailView: View {
     @ObservedObject var songViewModel: SongViewModel
     let dateFormatter = DateFormatterService()
+    
+    @State private var showModal = false
+    @State private var url: URL?
     
     var body: some View {
         VStack {
@@ -43,21 +47,32 @@ struct SearchDetailView: View {
 
             Spacer()
         }
-        .navigationBarItems(trailing: createLink())
+        .navigationBarItems(trailing: Button(action: {
+            showModal.toggle()
+        }) {
+            Image(systemName: "safari")
+        })
         .onAppear {
             songViewModel.loadImage(for: .large)
         }
+        .sheet(isPresented: $showModal) {
+            if let url = URL(string: songViewModel.song.trackViewUrl) {
+                WebViewModal(url: url)
+            }
+        }
+    }
+}
+
+struct WebViewModal: UIViewRepresentable {
+    let url: URL
+
+    func makeUIView(context: Context) -> WKWebView {
+        return WKWebView()
     }
     
-    @ViewBuilder
-    private func createLink() -> some View {
-        if let url = URL(string: songViewModel.song.trackViewUrl) {
-            Link(destination: url) {
-                Image(systemName: "safari")
-            }
-        } else {
-            EmptyView()
-        }
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
 }
 
