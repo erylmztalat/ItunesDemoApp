@@ -9,19 +9,18 @@ import SwiftUI
 
 struct SearchView: View {
     @ObservedObject var viewModel: SearchViewModel
-    @State private var showingAlert = false
 
     var body: some View {
         NavigationView {
             Group {
                 if let error = viewModel.error, !viewModel.searchText.isEmpty {
-                    EmptyView(imageName: "exclamationmark.triangle.fill", message: error.localizedDescription)
+                    EmptyStateView(imageName: "exclamationmark.triangle.fill", message: error.localizedDescription)
                 } else if viewModel.songs.isEmpty {
-                    EmptyView()
+                    EmptyStateView()
                 } else {
                     List() {
                         ForEach(viewModel.songs, id: \.id) { song in
-                            SearchListView(searchListViewModel: SearchListViewModel(song: song, imageLoader: URLImageLoader()))
+                            SearchListView(songViewModel: SongViewModel(song: song, imageLoader: URLImageLoader()))
                                 .onAppear {
                                     if song == viewModel.songs.last {
                                         viewModel.loadMoreMusics(for: song)
@@ -33,6 +32,7 @@ struct SearchView: View {
                 }
             }
             .navigationTitle("Search")
+            .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $viewModel.searchText)
         }
         .onChange(of: viewModel.searchText) { newText in
