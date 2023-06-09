@@ -6,9 +6,13 @@
 //
 
 import Foundation
-import SwiftUI
 
-class SearchListViewModel: ObservableObject {
+enum ImageSize {
+    case small
+    case large
+}
+
+class SongViewModel: ObservableObject {
     @Published var imageData: Data?
     private let imageLoader: ImageLoader
     let song: Song
@@ -18,8 +22,15 @@ class SearchListViewModel: ObservableObject {
         self.imageLoader = imageLoader
     }
 
-    func loadImage() {
-        guard let url = URL(string: song.artworkUrl60) else { return }
+    func loadImage(for size: ImageSize) {
+        let urlStr: String
+        switch size {
+        case .small:
+            urlStr = song.artworkUrl60
+        case .large:
+            urlStr = song.artworkUrl100
+        }
+        guard let url = URL(string: urlStr) else { return }
         Task {
             do {
                 let image = try await imageLoader.loadImage(from: url)

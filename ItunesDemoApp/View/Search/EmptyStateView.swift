@@ -1,5 +1,5 @@
 //
-//  EmptyView.swift
+//  EmptyStateView.swift
 //  ItunesDemoApp
 //
 //  Created by talate on 8.06.2023.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct EmptyView: View {
+struct EmptyStateView: View {
     let imageName: String
     let message: String
     
-    init(imageName: String = "music.note", message: String = "Start searching for music...") {
+    init(imageName: String = "music.note", message: String = "Start discover the music...") {
         self.imageName = imageName
         self.message = message
     }
@@ -26,12 +26,12 @@ struct EmptyView: View {
             Spacer()
         }
         .padding()
-        .foregroundColor(Color(.systemIndigo))
+        .foregroundColor(Color(.red))
     }
 }
 
-struct EmptyView_Previews: PreviewProvider {
+struct EmptyStateView_Previews: PreviewProvider {
     static var previews: some View {
-        EmptyView()
+        EmptyStateView()
     }
 }
