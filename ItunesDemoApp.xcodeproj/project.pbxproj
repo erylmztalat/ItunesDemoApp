@@ -196,7 +196,6 @@
 			children = (
 				060699202A316767005B32FE /* SearchView.swift */,
 				060699222A3167A4005B32FE /* SearchViewModel.swift */,
-				060699242A31F34E005B32FE /* EmptyStateView.swift */,
 				0640E00C2A324917009671E6 /* SearchListView.swift */,
 				0640E0112A324EE7009671E6 /* SongViewModel.swift */,
 				06CFE2DD2A328F7C00C19378 /* SearchDetailView.swift */,
@@ -208,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				06CFE2E02A32A5D900C19378 /* DateFormatterService.swift */,
+				060699242A31F34E005B32FE /* EmptyStateView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
